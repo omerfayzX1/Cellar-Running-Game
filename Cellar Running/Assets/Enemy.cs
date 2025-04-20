@@ -8,6 +8,8 @@ public class EnemyController : MonoBehaviour
     public float chaseSpeed = 5f; // Takip hýzý
     public float detectionRange = 10f; // Düþman, bu mesafeden sonra oyuncuyu fark eder
 
+
+
     private Transform currentTarget;
     private Transform player;
     private bool isChasing = false;

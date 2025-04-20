@@ -22,11 +22,22 @@ public class Player : MonoBehaviour
     private bool isGrounded;
 
     private Rigidbody rb;
+    public Vector3 jump;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
+        jump = new Vector3(0.0f, 1.0f, 1.0f);
+    }
+    void OnCollisionStay()
+    {
+        isGrounded = true;
+    }
+    void OnCollisionExit()
+    {
+        isGrounded = false;
     }
 
     void Update()
@@ -39,6 +50,13 @@ public class Player : MonoBehaviour
         {
             float vertical = Input.GetAxis("Vertical");
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, vertical * climbSpeed, rb.linearVelocity.z);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+
+            rb.AddForce(jump * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
         }
 
         transform.Rotate(Vector3.up * mouseX);
