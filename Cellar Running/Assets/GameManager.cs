@@ -9,6 +9,22 @@ public class GameManager : MonoBehaviour
     public GameObject winTextObject;
     public Text paperCountText; // Sol üst köþe için Text
 
+
+    private static GameManager instance;
+
+    private void Awake()
+    {
+        // Eðer instance zaten varsa, bu objeyi yok et
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);  // Bu objenin sahneler arasýnda yok olmasýný engeller
+        }
+    }
     void Start()
     {
         winTextObject.SetActive(false);
@@ -34,5 +50,14 @@ public class GameManager : MonoBehaviour
     void UpdatePaperCountText()
     {
         paperCountText.text = "Kaðýtlar: " + collectedPapers + " / " + totalPapers;
+    }
+
+    void OnLevelWasLoaded(int level)
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 }

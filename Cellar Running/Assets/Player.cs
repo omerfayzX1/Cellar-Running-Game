@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
+    public Transform player;  // Oyuncu objesi
+
+
+
     [Header("Hareket Ayarları")]
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
@@ -24,6 +28,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody rb;
     public Vector3 jump;
+    public GameOverManager gameOverManager;
 
 
     void Start()
@@ -42,16 +47,20 @@ public class Player : MonoBehaviour
     {
         isGrounded = false;
     }
-    void OnCollisionEnter(Collision collision)
+    
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Geçerli sahneyi yeniden yükle (oyunu en baştan başlatır)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            gameOverManager.ShowGameOver();
         }
     }
     void Update()
     {
+        float move = Input.GetAxis("Horizontal");  // Klavye ok tuşları veya 'A' ve 'D' tuşları ile hareket
+
+        // Sağ ve sola hareket
+        transform.Translate(move * moveSpeed * Time.deltaTime, 0f, 0f);  // Yalnızca X ekseninde hareket
         // Kamera Dönüşü (Mouse ile)
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
