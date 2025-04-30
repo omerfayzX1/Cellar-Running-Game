@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
@@ -31,6 +32,8 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         jump = new Vector3(0.0f, 1.0f, 1.0f);
     }
+
+
     void OnCollisionStay()
     {
         isGrounded = true;
@@ -39,7 +42,14 @@ public class Player : MonoBehaviour
     {
         isGrounded = false;
     }
-
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            // Geçerli sahneyi yeniden yükle (oyunu en baştan başlatır)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
     void Update()
     {
         // Kamera Dönüşü (Mouse ile)
@@ -83,15 +93,18 @@ public class Player : MonoBehaviour
         Vector3 velocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
         rb.linearVelocity = velocity;
     }
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ladder"))
+        if (other.CompareTag("Paper"))
         {
-            onLadder = true;
-            rb.useGravity = false;
+            GameManager gm = FindObjectOfType<GameManager>();
+            gm.CollectPaper();
+
+            Destroy(other.gameObject); // Kağıdı yok et
         }
     }
+
+   
 
     private void OnTriggerExit(Collider other)
     {

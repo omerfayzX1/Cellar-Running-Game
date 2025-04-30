@@ -1,41 +1,38 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public int totalPapers = 5;
+    private int collectedPapers = 0;
 
-    private int collectedPages = 0;
-    public int totalPages = 5;
+    public GameObject winTextObject;
+    public Text paperCountText; // Sol üst köþe için Text
 
-    void Awake()
+    void Start()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
+        winTextObject.SetActive(false);
+        UpdatePaperCountText();
     }
 
-    public void CollectPage()
+    public void CollectPaper()
     {
-        collectedPages++;
-        Debug.Log("Kaðýt alýndý! " + collectedPages + "/" + totalPages);
+        collectedPapers++;
+        UpdatePaperCountText();
 
-        if (collectedPages >= totalPages)
+        if (collectedPapers >= totalPapers)
         {
             WinGame();
         }
     }
 
-    public void RestartGame()
+    void WinGame()
     {
-        Debug.Log("Yakalandýn! Oyun yeniden baþlýyor...");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        winTextObject.SetActive(true);
     }
 
-    private void WinGame()
+    void UpdatePaperCountText()
     {
-        Debug.Log("Tebrikler! Tüm kaðýtlarý topladýn ve oyunu kazandýn!");
-        // Buraya kazanma ekraný, ses veya sahne geçiþi ekleyebilirsin
+        paperCountText.text = "Kaðýtlar: " + collectedPapers + " / " + totalPapers;
     }
 }
