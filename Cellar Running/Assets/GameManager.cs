@@ -1,16 +1,17 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public int totalPapers = 5;
+    public int totalPapers;
     private int collectedPapers = 0;
 
     public GameObject winTextObject;
-    public Text paperCountText; // Sol üst köþe için Text
+    public TextMeshProUGUI paperCountText; // Sol üst köþe için Text
 
 
-    private static GameManager instance;
+    public static GameManager instance;
 
     private void Awake()
     {
@@ -24,10 +25,12 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);  // Bu objenin sahneler arasýnda yok olmasýný engeller
         }
+
+        totalPapers = FindObjectsByType<PaperCollectible>(FindObjectsSortMode.None).Length;
     }
     void Start()
     {
-        winTextObject.SetActive(false);
+        if(winTextObject != null )winTextObject.SetActive(false);
         UpdatePaperCountText();
     }
 

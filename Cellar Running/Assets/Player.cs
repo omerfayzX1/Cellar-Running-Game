@@ -4,10 +4,6 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    public Transform player;  // Oyuncu objesi
-
-
-
     [Header("Hareket Ayarları")]
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
@@ -113,8 +109,6 @@ public class Player : MonoBehaviour
         }
     }
 
-   
-
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Ladder"))
@@ -123,5 +117,5 @@ public class Player : MonoBehaviour
             rb.useGravity = true;
         }
     }
-
 }
+
