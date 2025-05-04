@@ -24,7 +24,6 @@ public class Player : MonoBehaviour
 
     private Rigidbody rb;
     public Vector3 jump;
-    public GameOverManager gameOverManager;
 
 
     void Start()
@@ -48,7 +47,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            gameOverManager.ShowGameOver();
+            GameManager.instance.stateManager.OnPlayerLose();
         }
     }
     void Update()
